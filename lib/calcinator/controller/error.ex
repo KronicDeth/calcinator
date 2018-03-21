@@ -115,13 +115,43 @@ if Code.ensure_loaded?(Phoenix.Controller) do
 
     @doc """
     Renders `changeset` as an error object using the `Alembic.Document.from_ecto_changeset/1`.
+
+    If `:render_changeset_error` is set with `Calcinator.Controller.Error.Plug`, then those options are used
+
+        embedded_attribute_set = MapSet.new(~w(author recipients)a)
+
+        render_changeset_error_options =
+          ecto_schema_module
+          |> Alembic.Source.ancestor_descendants_from_ecto_changeset_path_options_from_ecto_schema_module()
+          |> update_in([:association_set], &MapSet.difference(&1, embedded_attribute_set))
+          |> update_in([:attribute_set], &MapSet.union(&1, embedded_attribute_set))
+
+        plug Calcinator.Controller.Error.Plug, render_changeset_error: render_changeset_error_options
+
     """
     @spec render_changeset_error(Conn.t(), Ecto.Changeset.t()) :: Conn.t()
     def render_changeset_error(conn, changeset) do
+      options = conn.private[__MODULE__][:render_changeset_error] || %{}
+      render_changeset_error(conn, changeset, options)
+    end
+
+    @doc """
+    Renders `changeset` as an error object using the `Alembic.Document.from_ecto_changeset/2`.
+    """
+    @since "5.2.0"
+    @spec render_changeset_error(Conn.t(), Ecto.Changeset.t(), %{
+            optional(:association_set) => MapSet.t(atom),
+            optional(:association_by_foreign_key) => %{
+              atom => atom
+            },
+            optional(:attribute_set) => MapSet.t(atom),
+            optional(:format_key) => (atom -> String.t())
+          }) :: Conn.t()
+    def render_changeset_error(conn, changeset, options) do
       conn
       |> put_status(:unprocessable_entity)
       |> put_resp_content_type()
-      |> json(Alembic.Document.from_ecto_changeset(changeset, %{format_key: &Utils.format_key/1}))
+      |> json(Alembic.Document.from_ecto_changeset(changeset, Map.put_new(options, :format_key, &Utils.format_key/1)))
       |> halt()
     end
 
