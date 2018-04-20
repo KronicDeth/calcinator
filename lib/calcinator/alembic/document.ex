@@ -64,6 +64,18 @@ defmodule Calcinator.Alembic.Document do
 
   @doc """
   500 Internal Server Error JSONAPI error document with error with title `"Ownership Error"`.
+
+      iex> Calcinator.Alembic.Document.ownership_error()
+      %Alembic.Document{
+        errors: [
+          %Alembic.Error{
+            detail: "Owner of backing store connection could not be found",
+            status: "500",
+            title: "Ownership Error"
+          }
+        ]
+      }
+
   """
   @spec ownership_error :: Document.t()
   def ownership_error do
