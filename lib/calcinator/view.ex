@@ -38,28 +38,30 @@ defmodule Calcinator.View do
   Rendered `related` iodata.
   """
   @callback get_related_resource(related, %{
+              required(:calcinator) => Calcinator.t(),
               optional(:params) => params,
               optional(:related) => related,
-              optional(:source) => struct,
-              optional(:subject) => subject
+              optional(:source) => struct
             }) :: iodata
 
   @doc """
-  Renders list of `struct` with optional pagination, params, and subject (for view-level authorization of individual
-  attributes). `base_uri` is required when `pagination` is present.
+  Renders list of `struct` with optional pagination and params and required calcinator. `base_uri` is required when
+  `pagination` is present.  `calcinator` `t:Calcinator.t/0` `subject` is for view-level authorization of individual
+  attributes, while `t:Calcinator.t/0` `resources_module` is whole is used to reconstruct the `"sort"` query parameters
+  for the pagination links.
   """
   @callback index([struct], %{
+              required(:calcinator) => Calcinator.t(),
               optional(:base_uri) => URI.t(),
               optional(:pagination) => maybe_pagination,
-              optional(:params) => params,
-              optional(:subject) => subject
+              optional(:params) => params
             }) :: iodata
 
   @doc """
-  Renders the show iodata for the given `struct` and optional params and subject (for view-level authorization of
-  individual attributes).
+  Renders the show iodata for the given `struct` and optional params and required calcinator.  The `t:Calcinator.t/0`
+  `subject` is used for view-level authorization of invididual attributes.
   """
-  @callback show(struct, %{optional(:params) => params, optional(:subject) => subject}) :: iodata
+  @callback show(struct, %{required(:calcinator) => Calcinator.t(), optional(:params) => params}) :: iodata
 
   @doc """
   Renders [the relationship iodata](http://jsonapi.org/format/#fetching-relationships) for the given `related`.

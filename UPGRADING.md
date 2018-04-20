@@ -1,12 +1,23 @@
 # Upgrading
 
-## v5.1.0
+## v6.0.0
 
 `query_options[:page]` is no longer ignored when passed to `use Calcinator.Resources.Ecto.Repo`'s `list/1` by default.  To restore the old behavior change the paginator to `Calcinator.Resources.Ecto.Repo.Pagination.Ignore`:
 
 ```elixir
 config :calcinator, Calcinator.Resources.Ecto.Repo, paginator: Calcinator.Resources.Ecto.Repo.Pagination.Ignore
 ```
+
+`Calcinator.View` callbacks have changed: `optional(:subject)` has been removed from the options map and replaced with `required(:calcinator)`, which is the full `t:Calcinator.t/0`.
+
+| < v6.0.0                                                                                                                                                             | >= v6.0.0                                                                                                                                                                      |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `get_related_resource(related, %{optional(:params) => params, optional(:related) => related, optional(:source) => struct, optional(:subject) => subject}) :: iodata` | `get_related_resource(related, %{required(:calcinator) => Calcinator.t(), optional(:params) => params, optional(:related) => related, optional(:source) => struct}) :: iodata` |
+| `index([struct], %{optional(:base_uri) => URI.t, optional(:pagination) => maybe_pagination, optional(:params) => params, optional(:subject) => subject}) :: iodata`  | `index([struct], %{optional(:base_uri) => URI.t, required(:calcinator) => Calcinator.t(), optional(:pagination) => maybe_pagination, optional(:params) => params}) :: iodata`  |
+| `show(struct, %{optional(:params) => params, optional(:subject) => subject}) :: iodata`                                                                              | `show(struct, %{required(:calcinator) => Calcinator.t(), optional(:params) => params}) :: iodata`                                                                              |
+| `show_relationship(related, %{optional(:params) => params, optional(:related) => related, optional(:source) => struct, optional(:subject) => subject}) :: iodata`    | `show_relationship(related, %{required(:calcinator) => Calcinator.t(), optional(:params) => params, optional(:related) => related, optional(:source) => struct}) :: iodata`    |
+
+**If you `use Calcinator.JaSerializer.PhoenixView`, no changes are necessary**, but if you implement `Calcinator.View` directly, you will need to get the subject with `options.calcinator.subject` instead of `options[:subject]`.
 
 ## v5.0.0
 

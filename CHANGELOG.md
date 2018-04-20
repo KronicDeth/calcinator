@@ -3,23 +3,24 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Changelog](#changelog)
-  - [v5.1.0](#v510)
+  - [v6.0.0](#v600)
     - [Enhancements](#enhancements)
     - [Bug Fixes](#bug-fixes)
+    - [Incompatible Changes](#incompatible-changes)
   - [v5.0.0](#v500)
     - [Enhancements](#enhancements-1)
     - [Bug Fixes](#bug-fixes-1)
-    - [Incompatible Changes](#incompatible-changes)
+    - [Incompatible Changes](#incompatible-changes-1)
   - [v4.0.1](#v401)
     - [Bug Fixes](#bug-fixes-2)
   - [v4.0.0](#v400)
     - [Enhancements](#enhancements-2)
     - [Bug Fixes](#bug-fixes-3)
-    - [Incompatible Changes](#incompatible-changes-1)
+    - [Incompatible Changes](#incompatible-changes-2)
   - [v3.0.0](#v300)
     - [Enhancements](#enhancements-3)
     - [Bug Fixes](#bug-fixes-4)
-    - [Incompatible Changes](#incompatible-changes-2)
+    - [Incompatible Changes](#incompatible-changes-3)
   - [v2.4.0](#v240)
     - [Enhancements](#enhancements-4)
   - [v2.3.1](#v231)
@@ -34,7 +35,7 @@
   - [v2.0.0](#v200)
     - [Enhancements](#enhancements-8)
     - [Bug Fixes](#bug-fixes-7)
-    - [Incompatible Changes](#incompatible-changes-3)
+    - [Incompatible Changes](#incompatible-changes-4)
   - [v1.7.0](#v170)
     - [Enhancements](#enhancements-9)
     - [Bug Fixes](#bug-fixes-8)
@@ -61,7 +62,7 @@
 
 # Changelog
 
-## v5.1.0
+## v6.0.0
 
 ### Enhancements
 * [#36](https://github.com/C-S-D/calcinator/pull/36) - [@KronicDeth](https://github.com/KronicDeth)
@@ -137,6 +138,9 @@
 * [#42](https://github.com/C-S-D/calcinator/pull/42) - Fix `Unknown type 'Elixir.Resources'` dialyzer errors by adding missing qualifiers or `alias`es. - [@KronicDeth](https://github.com/KronicDeth)
 * [#44](https://github.com/C-S-D/calcinator/pull/44) - Allow query params to passthrough for paginate links - [@alexgaribay](https://github.com/alexgaribay), [@KronicDeth](https://github.com/KronicDeth)
 
+### Incompatible Changes
+* [#44](https://github.com/C-S-D/calcinator/pull/44) - `Calcinator.View` implementations must now accept a `calcinator` key with `t:Calcinator.t/0` value in their options and will no longer be passed a `subject` option to allow for bug fix to query params on pagination links for `c:Calcinator.View.index/2` implementation in `Calcinator.PhoenixView.index/3` - [@alexgaribay](https://github.com/alexgaribay), [@KronicDeth](https://github.com/KronicDeth)
+* 
 ## v5.0.0
 
 ### Enhancements
