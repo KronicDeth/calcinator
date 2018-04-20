@@ -2,5 +2,8 @@
   "coverage_options": {
     "minimum_coverage": 80.564,
     "treat_no_relevant_lines_as_covered": true
-  }
+  },
+  "custom_stop_words": [
+    "raise"
+  ]
 }

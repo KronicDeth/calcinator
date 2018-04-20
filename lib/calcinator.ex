@@ -273,6 +273,27 @@ defmodule Calcinator do
     * `{:error, Alembic.Document.t}` - JSONAPI error document with `params` errors
     * `{:error, reason}` - a backing store-specific error
 
+  ## Exceptions
+
+  If `options` are refers to a non-existent association, it is a developer error and so raises an ArgumentError instead
+  of return `{:error, reason}` as is down for user errors.
+
+      iex> meta = checkout_meta()
+      iex> post = Factory.insert(:test_post)
+      iex> Calcinator.get_related_resource(
+      ...>   %Calcinator{
+      ...>     view_module: Calcinator.TestPostView,
+      ...>     resources_module: Calcinator.Resources.Ecto.Repo.TestPosts
+      ...>   },
+      ...>   %{"meta" => meta, "post_id" => to_string(post.id)},
+      ...>   %{
+      ...>     related: %{view_module: Calcinator.TestAuthorView},
+      ...>     # `Calcinator.Resources.TestPost` association is mispelled as `auther` instead of `author`
+      ...>     source: %{association: :auther, id_key: "post_id"}
+      ...>   }
+      ...> )
+      ** (ArgumentError) schema Calcinator.Resources.TestPost does not have association :auther
+
   """
   @spec get_related_resource(t, params, map) ::
           {:ok, rendered}

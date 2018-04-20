@@ -1,7 +1,9 @@
 defmodule CalcinatorTest do
-  alias Calcinator.Resources.{TestAuthor, TestPost}
-
   use ExUnit.Case, async: true
+
+  import Calcinator.Resources.Ecto.Repo.Repo.Case
+
+  alias Calcinator.Resources.{Ecto.Repo.Factory, TestAuthor, TestPost}
 
   # Tests
 
